@@ -17,29 +17,38 @@
             var options = $.extend(defaults, options);
 			
 			
-			function getFeed(page_index){
+			function getFeed(){
 				 
 					$.getJSON(options.feedUrl+'&callback=?', function(json) {
 					    
 					     console.log("items"+options.items_per_page);
 						 console.log("json"+json.data.items.length);
-						 var max_elem = json.data.items.length / options.items_per_page;
 						 
-						 console.log(max_elem);
+						 var max_length = json.data.items.length;
+						 var max_elem   = max_length / options.items_per_page;
 						 
-						 for (i=0;i<=options.items_per_page;i++){
+						 //console.log(max_elem);
+						  var html = "<ul id='scroll'>";
+						 $.each(json.data.items, function(i, feed) {
 						 
-						 console.log(json);
+						 console.log(feed);
 						 
+						 // setup feed vars here
+						 var thumbnail = feed.thumbnail.sqDefault;
 						 
-						 }
-										
+						 html += '<li><img src="'+(thumbnail)+'" width="100" height="60"/></li>'; 
+						 
+						 });
+						html += "</ul>";
+						$('#'+options.scrollId).html(html).fadeIn(2000);
 						
 					});
 
 					return false;
 					 
 			}
+			
+			getFeed();
 
 			
 			
@@ -51,12 +60,12 @@
 					return Math.ceil(maxentries/options.items_per_page);
 				} 
              
-             getFeed();
+
 
             return this.each(function() {
 			
 			     
-				 console.log($(this)); 
+				 //console.log($(this)); 
                  
 				 
 				 
